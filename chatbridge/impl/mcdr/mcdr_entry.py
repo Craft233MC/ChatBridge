@@ -48,7 +48,7 @@ def query_online(source: CommandSource):
 def restart_client(source: CommandSource):
 	with cb_lock:
 		client.restart()
-	source.reply(tr('restarted'))
+	source.reply(tr('已重启'))
 
 
 @new_thread('ChatBridge-unload')
@@ -57,7 +57,7 @@ def on_unload(server: PluginServerInterface):
 	plugin_unload_flag = True
 	with cb_lock:
 		if client is not None and client.is_running():
-			server.logger.info('Stopping chatbridge client due to plugin unload')
+			server.logger.info('正在关闭chatbridge:插件卸载')
 			client.stop()
 	cb_stop_done.set()
 
@@ -95,7 +95,7 @@ def on_load(server: PluginServerInterface, old_module):
 		config.enable = False
 
 	if not config.enable:
-		server.logger.info('ChatBridge is disabled')
+		server.logger.info('ChatBridge已关闭')
 		return
 
 	client = ChatBridgeMCDRClient(config, server)
@@ -118,7 +118,7 @@ def on_load(server: PluginServerInterface, old_module):
 				stop_event: Event = old_module.cb_stop_done
 				if not stop_event.wait(30):
 					server.logger.warning('Previous chatbridge instance does not stop for 30s')
-			server.logger.info('Starting chatbridge client')
+			server.logger.info('正在启动chatbridge客户端')
 			client.start()
 			utils.start_guardian(client, wait_time=60, loop_condition=lambda: not plugin_unload_flag)
 
@@ -139,11 +139,11 @@ def on_player_left(server: PluginServerInterface, player_name: str):
 
 
 def on_server_startup(server: PluginServerInterface):
-	send_chat('Server has started up')
+	send_chat('服务器启动~')
 
 
 def on_server_stop(server: PluginServerInterface, return_code: int):
-	send_chat('Server stopped')
+	send_chat('服务器停止:<')
 
 
 @event_listener('more_apis.death_message')

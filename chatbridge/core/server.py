@@ -59,11 +59,11 @@ class _ClientConnection(ChatBridgeClient):
 
 	def _on_started(self):
 		super()._on_started()
-		self.logger.info('Started client connection')
+		self.logger.info('已开启客户端连接')
 
 	def _on_stopped(self):
 		super()._on_stopped()
-		self.logger.info('Stopped client connection')
+		self.logger.info('已关闭客户端连接')
 
 	def restart_connection(self, conn: socket.socket, addr: Address):
 		if not self._is_stopped():

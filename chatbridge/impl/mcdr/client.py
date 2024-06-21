@@ -32,7 +32,7 @@ class ChatBridgeMCDRClient(ChatBridgeClient):
 
 	def _on_stopped(self):
 		super()._on_stopped()
-		self.logger.info('Client stopped')
+		self.logger.info('客户端停止')
 
 	def on_chat(self, sender: str, payload: ChatPayload):
 		self.server.say(RText('[{}] {}'.format(sender, payload.formatted_str()), RColor.white))
@@ -73,7 +73,7 @@ class ChatBridgeMCDRClient(ChatBridgeClient):
 		elif command == '!!online':  # !!online response
 			player = payload.params.get('player')
 			if player is None:
-				self.logger.warning('No player in params, params {}'.format(payload.params))
+				self.logger.warning('参数中没有玩家, 参数: {}'.format(payload.params))
 			else:
 				result: OnlineQueryResult = OnlineQueryResult.deserialize(payload.result)
 				for line in result.data:

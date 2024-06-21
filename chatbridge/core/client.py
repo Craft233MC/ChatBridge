@@ -169,20 +169,20 @@ class ChatBridgeClient(ChatBridgeBase):
 		self.__connection_done.clear()
 		super().start()
 		self.__connection_done.wait()
-		self.logger.debug('Started client')
+		self.logger.debug('已启动客户端')
 
 	def stop(self):
-		self.logger.debug('Stopping client')
+		self.logger.debug('关闭客户端...')
 		with self.__start_stop_lock:
 			if self._is_stopped():
 				self.logger.warning('Client is stopped, cannot stop again')
 				return
 			self.__disconnect()  # state -> STOPPED or DISCONNECTED
 		super().stop()
-		self.logger.debug('Stopped client')
+		self.logger.debug('客户端已关闭')
 
 	def restart(self):
-		self.logger.info('Restarting client')
+		self.logger.info('正在重启客户端')
 		with self.__start_stop_lock:
 			if not self._is_stopped():
 				self.stop()
@@ -192,14 +192,14 @@ class ChatBridgeClient(ChatBridgeBase):
 		self.__connect()
 		self._send_packet(LoginPacket(name=self.__info.name, password=self.__info.password))
 		self._receive_packet(LoginResultPacket)
-		self.logger.info('Connected to the server')
+		self.logger.info('已连接到服务器')
 
 	def _main_loop(self):
 		try:
 			self._connect_and_login()
 			self._set_status(ClientStatus.ONLINE)
 		except Exception as e:
-			(self.logger.exception if self.logger.is_debug_enabled() else self.logger.error)('Failed to connect to {}: {}'.format(self.__server_address, e))
+			(self.logger.exception if self.logger.is_debug_enabled() else self.logger.error)('连接到服务器失败: {}: {}'.format(self.__server_address, e))
 			self.__disconnect()
 			self.__connection_done.set()
 		else:
@@ -212,7 +212,7 @@ class ChatBridgeClient(ChatBridgeBase):
 					break
 				except socket.error:
 					if not self._is_stopping_or_stopped():
-						self.logger.exception('Failed to receive data, stopping client now')
+						self.logger.exception('接收数据失败, 正在关闭客户端')
 					break
 				except:
 					if not self._is_stopping_or_stopped():  # might already been handled and disconnected
