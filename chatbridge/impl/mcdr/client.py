@@ -35,7 +35,7 @@ class ChatBridgeMCDRClient(ChatBridgeClient):
 		self.logger.info('客户端停止')
 
 	def on_chat(self, sender: str, payload: ChatPayload):
-		self.server.say(RText('§r§f§l[§r§f{}§l] §r {}'.format(sender, payload.formatted_str()), RColor.white))
+		self.server.say(RText('§r§f§l[§r§f {} §l] §r {}'.format(sender, payload.formatted_str()), RColor.white))
 
 	def on_command(self, sender: str, payload: CommandPayload):
 		is_ask = not payload.responded
