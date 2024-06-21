@@ -75,7 +75,7 @@ class ChatPayload(AbstractPayload):
 
 	def formatted_str(self) -> str:
 		if self.author != '':
-			return '{} >> {}'.format(self.author, self.message)
+            return '§r§f{} §r§f§l>> §r§f{}'.format(self.author, self.message)
 		else:
 			return self.message
 
